@@ -1,0 +1,16 @@
+# Ignorar arquivos e pastas sensíveis
+config.py
+.env
+
+# Ignorar arquivos gerados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pywz
+*.pyc
+
+# Ignorar dependências e ambientes virtuais (se aplicável)
+venv/
+env/
