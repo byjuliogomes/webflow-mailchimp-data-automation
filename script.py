@@ -33,3 +33,34 @@ def import_data_from_webflow():
         formatted_data.append(formatted_item)
 
     return formatted_data
+
+def export_data_to_mailchimp(data):
+    url = f'https://usX.api.mailchimp.com/3.0/lists/{MAILCHIMP_LIST_ID}/members'
+    headers = {'Authorization': f'Bearer {MAILCHIMP_API_KEY}'}
+
+    for item in data:
+        merge_fields = {
+            'FNAME': item['first_name'],
+            'LNAME': item['last_name'],
+            'PHONE': item['phone'],
+            'BIRTHDATE': item['birthdate'],
+            'PRODUCT_USED': item['product_used'],
+            'PRIVACY_POLICY': item['privacy_policy'],
+            'DATA_USAGE': item['data_usage']
+        }
+
+        payload = {
+            'email_address': '',  # Adicione o endereço de e-mail do destinatário
+            'status': 'subscribed',
+            'merge_fields': merge_fields,
+            'tags': item['tags']
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            print('Data exported to Mailchimp successfully.')
+        else:
+            print('Failed to export data to Mailchimp.')
+
+data_from_webflow = import_data_from_webflow()
+export_data_to_mailchimp(data_from_webflow)
